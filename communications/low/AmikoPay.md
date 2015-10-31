@@ -20,6 +20,7 @@ text-based, and separated by newlines.
 Advantages of text-based messages:
 * Easy debugging
 * Many text-based serialization formats are easily extensible
+
 Disadvantages of text-based messages:
 * Bloated
 
