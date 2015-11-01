@@ -75,8 +75,8 @@ Used to initiate communication for a single payment (between payee and payer
 endpoints).
 
 Attributes:
-'ID': string. The payment ID.
-'dice': string. See below.
+* 'ID': string. The payment ID.
+* 'dice': string. See below.
 
 Note that Pay messages correspond to URLs of the form
 amikopay://host[:port]/ID
