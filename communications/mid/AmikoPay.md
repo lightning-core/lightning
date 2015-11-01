@@ -95,6 +95,11 @@ both sides keep the connection with the highest dice value, and drop the other
 connection. Here, 'highest' is evaluated by interpreting the dice string as a
 big endian 32-bit unsigned integer.
 
+In the unlikely case that both dice values are the same, both peers must still
+keep one connection and drop the other. If they keep the same connection, all
+is OK; if they keep the opposite connection, both connections will be closed. In
+that case, they will try to re-connect with different dice values.
+
 Note that, since communication between payer and payee is always initiated by
 the payer, the dice value serves no purpose there.
 
