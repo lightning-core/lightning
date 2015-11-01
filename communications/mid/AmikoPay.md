@@ -95,6 +95,9 @@ both sides keep the connection with the highest dice value, and drop the other
 connection. Here, 'highest' is evaluated by interpreting the dice string as a
 big endian 32-bit unsigned integer.
 
+Note that, since communication between payer and payee is always initiated by
+the payer, the dice value serves no purpose there.
+
 ###Future design change: UDP
 When the design is changed to be based on UDP instead of TCP, there will be
 no such thing anymore as initiating a communication session. To keep track of
@@ -102,4 +105,7 @@ which data belongs to which link, each UDP packet will have to contain a
 destination link ID. This ID can be included in the same level as the
 confirmation and re-transmission, so it will be an extra element next to
 'index' and 'message', and next to 'received'.
+
+Dice values will no longer be used. Call-back information can be transmitted in
+a regular message, as part of the regular message stream between peers.
 
