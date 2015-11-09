@@ -33,7 +33,8 @@ some standard may be defined on how the payee may cryptographically sign the
 receipt, so the receipt may act as a proof of ownership for the payer.
 
 The payee generates a commit token, which will be used for committing the
-transaction. It also calculates the transaction ID, which is a secure hash
+transaction: this is a secure random sequence of bytes, initially only known to
+the payee. It also calculates the transaction ID, which is a secure hash
 of the commit token (currently, RIPEMD160(SHA256(x)) is used as hash function).
 
 The payee's node stores the payment request data, and assigns it a payment ID.
@@ -110,7 +111,7 @@ When the payee finds a route, it sends a HavePayeeRoute message to the payer:
 
 ###HavePayeeRoute
 Attributes:
-* 'ID': string. Set to the value '__payer__'.
+* 'ID': string. Set to the value '\_\_payer\_\_'.
 * 'transactionID': string. The transaction ID (the hash of the commit token).
 
 This allows the payer to detect when both routes are established. As soon as
@@ -144,25 +145,28 @@ If necessary, the commit token can act as proof.
 Note that the next steps are necessary for successfully committing the
 transaction, but the software can handle this in the background. Payer and
 payee do not have to wait for this; this is useful, e.g. in POS situations
-where speed is important.
+where speed is important. Payer and payee can now close the communication
+session between them, as soon as the payer has confirmed receiving the
+Commit message.
 
 
 ##Network committing
 The last step is that both the payer and the payee start committing on their
 links. Note that, since they work in opposite directions, the incentives are
 different: the incentive on the payee side is the strongest (claiming the
-locked funds); the only incentive on the payer side is to release the locked
-funds to make them available for future transactions in the opposite direction.
+locked funds before the HTLC time-out happens); the only incentive on the payer
+side is to release the locked funds to make them available for future
+transactions in the opposite direction.
 
 Note that it is possible that the network committing in payee->payer direction
 reaches the payee earlier than the Commit message from the payee. In that case,
-the payer will also consider the payment to be committed.
+the payer can also consider the payment to be committed, and claim the goods /
+services, using the commit token as proof.
 
-As soon as both payer and payee have committed their links, they are no longer
-involved in the transaction, and they can close the communication session
-between them. Further committing can continue through the route,
-as long as there are no issues (e.g. misbehaving / non-responsive nodes). If
-there are any problems, the slower mechanisms for handling these (HTLC
-time-outs) are only required for a sub-set of the route that contains the
-problematic nodes.
+As soon as both payer and payee have committed the transaction on their links,
+they are no longer involved in the transaction. Further committing can continue
+through the route, as long as there are no issues (e.g. misbehaving /
+non-responsive nodes). If there are any problems, the slower mechanisms for
+handling these (HTLC time-outs) are only required for a sub-set of the route
+that contains the problematic nodes.
 
