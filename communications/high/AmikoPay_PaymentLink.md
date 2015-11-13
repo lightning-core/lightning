@@ -49,7 +49,7 @@ amikopay://host[:port]/ID
 where ID is the payment ID, and host[:port] is the address where the payer can
 connect to the payee.
 
-The payee sends the payment request to the payer. This can be done, for
+The payee sends the payment URL to the payer. This can be done, for
 instance, through NFC, with a QR code, or with a hyperlink on a website.
 
 
