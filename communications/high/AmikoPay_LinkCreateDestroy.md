@@ -1,4 +1,4 @@
-#Amiko Pay link protocol: creating and destroying links
+#Amiko Pay link protocol: creating and destroying links and channels
 
 Note 1: this information is to be moved to other documents, once it is
 determined where this information belongs. In the end, most Amiko Pay specific
