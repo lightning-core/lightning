@@ -164,6 +164,8 @@ this link; the funds are freed up, and become available to the sending side
 payee-side link: this frees up funds as soon as possible for future
 transactions, and it is a way of 'acting nice' to her payer-side neighbor.
 
+Note: Settling for rollback is not yet implemented.
+
 
 ##No Settlement:
 If neither party settles, the transaction continues to exist in a non-settled
