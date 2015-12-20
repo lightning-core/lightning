@@ -103,8 +103,8 @@ further initializes the channel:
 Attributes:
 * 'ID': string. The name of the link on the node receiving this message.
 * 'channelIndex': number. The index of the channel.
-* 'message': string. An arbitrary-content sequence of bytes. The channel class
-  determines the format of this attribute.
+* 'message': (any type except null). An arbitrary-content object. The channel
+  class determines the format of this attribute.
 
 The number of messages and their content is specified by the channel class.
 Typically, a channel class will exchange things like public keys, transactions,
