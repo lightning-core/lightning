@@ -24,7 +24,7 @@ routing through Bob. Alice starts by sending a MakeRoute message to Bob:
 
 ###MakeRoute:
 Attributes:
-* 'amount': number. The amount.
+* 'amount': number. The amount (in Satoshi).
 * 'transactionID': string. The transaction ID (the hash of the commit token).
 * 'startTime': number. The start of the time range in which the transaction can
   be committed by showing the transaction token.

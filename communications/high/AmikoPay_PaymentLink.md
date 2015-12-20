@@ -61,7 +61,7 @@ When the payee receives the Pay message, it responds with a Receipt message:
 
 ###Receipt
 Attributes:
-* 'amount': number. The amount.
+* 'amount': number. The amount (in Satoshi).
 * 'receipt': string. The receipt.
 * 'transactionID': string. The transaction ID (the hash of the commit token).
 * 'meetingPoints': array of strings. Each entry is the ID of a meeting point
