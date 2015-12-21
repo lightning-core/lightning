@@ -44,8 +44,12 @@ The 'channelClass' attribute in the Deposit message must be equal to
 'IOUChannel', to indicate that this channel type is being used.
 
 After the Deposit message, the depositing side sends a single ChannelMessage.
-The 'message' attribute of this ChannelMessage is a number, indicating the
-amount (in Satoshi) "deposited" into the channel.
+The 'message' attribute of this ChannelMessage is an instance of
+PlainChannel_Deposit:
+
+###PlainChannel_Deposit:
+Attributes:
+* 'amount': number. The amount (in Satoshi).
 
 
 ##Withdrawing
