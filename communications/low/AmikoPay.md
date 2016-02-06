@@ -27,11 +27,12 @@ Disadvantages of text-based messages:
 ###Future design change: use UDP instead of TCP
 Since our need to receive clarity over whether a message has arrive exceed what
 TCP provides, the higher-level design performs its own message retransmission
-mechanism. Under these circumstances, TCP offers little advantage; a switch to
-UDP is planned. Message separation is trivial in UDP; all messages are expected
-to fit in the max UDP message size of 65k bytes.
+mechanism. Under these circumstances, TCP offers little advantage; it might be
+possible to switch to UDP. Message separation is trivial in UDP; all messages
+are expected to fit in the max UDP message size of 65k bytes.
 
-TBD is whether UDP works well over TOR: this is highly desirable.
+A real problem with UDP is that it currently does not work well over the TOR
+network. It is highly desirable to make Amiko Pay work over TOR.
 
 Also TBD is how to let bi-directional UDP work well with NAT routers,
 considering the P2P nature of the network. In some cases, people might connect
