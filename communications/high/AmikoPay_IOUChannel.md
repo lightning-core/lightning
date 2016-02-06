@@ -43,20 +43,42 @@ establishing IOU channels in both directions.
 The 'channelClass' attribute in the Deposit message must be equal to
 'IOUChannel', to indicate that this channel type is being used.
 
-After the Deposit message, the depositing side sends a single ChannelMessage.
-The 'message' attribute of this ChannelMessage is an instance of
+After the Deposit message, the depositing / issuing side sends a single
+ChannelMessage. The 'message' attribute of this ChannelMessage is an instance of
 PlainChannel_Deposit:
 
 ###PlainChannel_Deposit:
 Attributes:
 * 'amount': number. The amount (in Satoshi).
 
+The non-issuing side replies with a single ChannelMessage, containing an
+instance of IOUChannel_Address:
+
+###PlainChannel_Deposit:
+Attributes:
+* 'address': string. The Bitcoin address to send the channel balance to on
+  withdrawing (base58check-encoded). For now, P2SH addresses are not supported.
+
 
 ##Withdrawing
-This is not yet implemented. Presumably, this involves a two-step operation,
-where the non-issuing peer first sends a Bitcoin address to the issuing peer,
-who then sends back a Bitcoin transaction that sends the required amount to
-that address.
+When one of the sides wishes to close the channel, it sends a ChannelMessage to
+the other side, containing an instance of PlainChannel_Withdraw:
+
+###PlainChannel_Withdraw:
+Attributes:
+* (This message has no attributes.)
+
+After sending/receiving this message, no more micro-transactions are accepted.
+
+Once the issuing side detects that there are no more ongoing micro-transactions,
+it creates a Bitcoin transaction that sends the owed amount to the address of
+the non-issuing side. It publishes this transaction on the Bitcoin network, and
+sends a ChannelMessage to the other side, containing an instance of
+IOUChannel_WithdrawTransaction:
+
+###IOUChannel_WithdrawTransaction:
+Attributes:
+* 'transaction': string. The serialized Bitcoin transaction.
 
 
 ##Fund locking
