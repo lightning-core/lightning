@@ -76,7 +76,6 @@ endpoints).
 
 Attributes:
 * 'ID': string. The payment ID.
-* 'dice': string. See below.
 
 Note that Pay messages correspond to URLs of the form
 amikopay://host[:port]/ID
@@ -101,10 +100,10 @@ is OK; if they keep the opposite connection, both connections will be closed. In
 that case, they will try to re-connect with different dice values.
 
 Note that, since communication between payer and payee is always initiated by
-the payer, the dice value serves no purpose there.
+the payer, it has no dice value.
 
 ###Future design change: UDP
-When the design is changed to be based on UDP instead of TCP, there will be
+If the design is changed to be based on UDP instead of TCP, there will be
 no such thing anymore as initiating a communication session. To keep track of
 which data belongs to which link, each UDP packet will have to contain a
 destination link ID. This ID can be included in the same level as the

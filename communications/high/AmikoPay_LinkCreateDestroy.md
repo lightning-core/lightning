@@ -88,7 +88,6 @@ Alice initates the creation of the channel by sending a Deposit message to Bob:
 
 ###Deposit
 Attributes:
-* 'ID': string. The name of the link on Bob's node
 * 'channelIndex': number. The index of the to-be-created channel (starting
   counting at zero). This must be equal to the number of channels that was
   already present in the link before this new channel is added.
@@ -101,7 +100,6 @@ further initializes the channel:
 
 ###ChannelMessage
 Attributes:
-* 'ID': string. The name of the link on the node receiving this message.
 * 'channelIndex': number. The index of the channel.
 * 'message': (any type except null). An arbitrary-content object. The channel
   class determines the format of this attribute.

@@ -30,8 +30,7 @@ Attributes:
   be committed by showing the transaction token.
 * 'endTime': number. The end of the time range in which the transaction can
   be committed by showing the transaction token.
-* 'meetingPointID': string. 
-* 'ID': string. The name of the link on Bob's node.
+* 'meetingPointID': string.
 * 'channelIndex': number. The index of the channel.
 * 'isPayerSide': boolean. True if this is the route from the payer to the
   meeting point, False if this is the route from the payee to the meeting point.
@@ -50,7 +49,6 @@ If Bob fails to find a route, he sends back a HaveNoRoute message to Alice:
 
 ###HaveNoRoute:
 Attributes:
-* 'ID': string. The name of the link on Alice's node.
 * 'transactionID': string. The transaction ID (the hash of the commit token).
 
 In this case, both nodes will unreserve the funds on the channel. The transacion
@@ -63,7 +61,6 @@ payee side). Both have the same attributes:
 
 ###HavePayerRoute / HavePayeeRoute:
 Attributes:
-* 'ID': string. The name of the link on Alice's node.
 * 'transactionID': string. The transaction ID (the hash of the commit token).
 
 Alice can send a CancelRoute message to Bob. Since her decision to send this

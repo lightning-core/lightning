@@ -79,14 +79,13 @@ message to the payee:
 
 ###Confirm
 Attributes:
-* 'ID': string. The payment ID.
 * 'meetingPointID': string. The meeting point that will be used for routing
   this transaction. This must be one of the meeting points mentioned in the
   Receipt message.
 
 ###Cancel
 Attributes:
-* 'ID': string. The payment ID.
+* (This message has no attributes.)
 
 In the case of a Cancel message, the connection between payer and payee is
 closed, and no further action is performed for the payment. The payment is
@@ -111,7 +110,6 @@ When the payee finds a route, it sends a HavePayeeRoute message to the payer:
 
 ###HavePayeeRoute
 Attributes:
-* 'ID': string. Set to the value '\_\_payer\_\_'.
 * 'transactionID': string. The transaction ID (the hash of the commit token).
 
 This allows the payer to detect when both routes are established. As soon as
