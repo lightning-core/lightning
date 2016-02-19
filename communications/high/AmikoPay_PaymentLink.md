@@ -106,11 +106,12 @@ by exceeding a time-out before finding a route.
 
 
 ##Locking
-When the payee finds a route, it sends a HavePayeeRoute message to the payer:
+When the payee finds a route, it sends a HaveRoute message to the payer:
 
-###HavePayeeRoute
+###HaveRoute
 Attributes:
-* 'transactionID': string. The transaction ID (the hash of the commit token).
+* 'transactionID': Set to null by the payee, and ignored by the payer.
+* 'isPayerSide': boolean. Set to False.
 
 This allows the payer to detect when both routes are established. As soon as
 that is the case, the payer starts locking funds on the first hop of the route.
@@ -130,10 +131,11 @@ committed, for as far as the payer is concerned: the payee can safely inform
 the payer that the payment has succeeded, and deliver the goods / services
 to the payer.
 
-The payee then releases the commit token to the payer with a Commit message:
+The payee then releases the commit token to the payer with a SettleCommit message:
 
-###Commit
+###SettleCommit
 * 'token': string. The commit token.
+* 'isPayerSide': Set to null by the payee, and ignored by the payer.
 
 On receiving the commit token, the payer considers the transaction
 committed, for as far as the payee is concerned: the payer can now claim to
@@ -157,9 +159,9 @@ side is to release the locked funds to make them available for future
 transactions in the opposite direction.
 
 Note that it is possible that the network committing in payee->payer direction
-reaches the payee earlier than the Commit message from the payee. In that case,
-the payer can also consider the payment to be committed, and claim the goods /
-services, using the commit token as proof.
+reaches the payee earlier than the SettleCommit message from the payee. In that
+case, the payer can also consider the payment to be committed, and claim the
+goods / services, using the commit token as proof.
 
 As soon as both payer and payee have committed the transaction on their links,
 they are no longer involved in the transaction. Further committing can continue

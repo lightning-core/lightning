@@ -50,32 +50,43 @@ If Bob fails to find a route, he sends back a HaveNoRoute message to Alice:
 ###HaveNoRoute:
 Attributes:
 * 'transactionID': string. The transaction ID (the hash of the commit token).
+* 'isPayerSide': boolean. True if this is the route from the payer to the
+  meeting point, False if this is the route from the payee to the meeting point.
 
 In this case, both nodes will unreserve the funds on the channel. The transacion
 finishes in a cancelled state on this link; Alice may try to establish a route
 by using her other links.
 
-The other case is that Bob finds a route. In that case, Bob sends a
-HavePayerRoute message (on the payer side) or a HavePayeeRoute message (on the
-payee side). Both have the same attributes:
+The other case is that Bob finds a route. In that case, Bob sends a HaveRoute
+message:
 
-###HavePayerRoute / HavePayeeRoute:
+###HaveRoute:
 Attributes:
 * 'transactionID': string. The transaction ID (the hash of the commit token).
+* 'isPayerSide': boolean. True if this is the route from the payer to the
+  meeting point, False if this is the route from the payee to the meeting point.
 
-Alice can send a CancelRoute message to Bob. Since her decision to send this
-message is asynchronous from Bob's decision to send a HaveNoRoute /
-HavePayerRoute / HavePayeeRoute message, Alice can send a CancelRoute both
-before and after a HaveNoRoute / HavePayerRoute / HavePayeeRoute from Bob.
+Alice can send a CancelRoute message to Bob:
+
+###CancelRoute:
+Attributes:
+* 'transactionID': string. The transaction ID (the hash of the commit token).
+* 'isPayerSide': boolean. True if this is the route from the payer to the
+  meeting point, False if this is the route from the payee to the meeting point.
+
+Since her decision to send this
+message is asynchronous from Bob's decision to send a HaveNoRoute / HaveRoute
+message, Alice can send a CancelRoute both before and after a HaveNoRoute /
+HaveRoute from Bob.
 
 When Alice sends a CancelRoute, both nodes will unreserve the funds on the
 channel. The transacion finishes in a cancelled state on this link; Alice may
 try to establish a route by using her other links. Note that CancelRoute takes
-precedence over HavePayerRoute / HavePayeeRoute. Since it has the same effect
-as HaveNoRoute, precedence order with HaveNoRoute is irrelevant.
+precedence over HaveRoute. Since it has the same effect as HaveNoRoute,
+precedence order with HaveNoRoute is irrelevant.
 
-The rest of this protocol description assumes that a HavePayerRoute /
-HavePayeeRoute has been sent, and no CancelRoute has been sent.
+The rest of this protocol description assumes that a HaveRoute has been sent,
+and no CancelRoute has been sent.
 
 
 ##Fund locking
@@ -91,6 +102,8 @@ Alice sends a Lock message to Bob:
 ###Lock:
 Attributes:
 * 'transactionID': string. The transaction ID (the hash of the commit token).
+* 'isPayerSide': boolean. True if this is the route from the payer to the
+  meeting point, False if this is the route from the payee to the meeting point.
 * TBD: a payload attribute, with comments specific to the channel type.
 
 Next, a conversation consisting of zero or more 'ChannelMessage' messages
@@ -108,6 +121,8 @@ can request a commit settlement by sending a Commit message to Alice:
 ###Commit:
 Attributes:
 * 'token': string. The commit token.
+* 'isPayerSide': boolean. True if this is the route from the payer to the
+  meeting point, False if this is the route from the payee to the meeting point.
 
 If this is done before the time-out of the transaction, this proves to Alice
 that Bob can enforce a commit on the transaction channel, if necessary. Under
@@ -126,6 +141,8 @@ committing the transaction on the link, by sending a SettleCommit message:
 ###SettleCommit:
 Attributes:
 * 'token': string. The commit token.
+* 'isPayerSide': boolean. True if this is the route from the payer to the
+  meeting point, False if this is the route from the payee to the meeting point.
 * TBD: a payload attribute, with comments specific to the channel type.
 
 Next, a conversation consisting of zero or more 'ChannelMessage' messages
@@ -143,6 +160,9 @@ payment) can voluntarily settle for roll-back with a CommitRollback message:
 
 ###SettleRollback:
 Attributes:
+* 'transactionID': string. The transaction ID (the hash of the commit token).
+* 'isPayerSide': boolean. True if this is the route from the payer to the
+  meeting point, False if this is the route from the payee to the meeting point.
 * TBD: a payload attribute, with comments specific to the channel type.
 
 Next, a conversation consisting of zero or more 'ChannelMessage' messages
@@ -170,4 +190,16 @@ state in the microtransaction channel until the channel is closed. Presumably,
 channel closing will be non-cooperative, since cooperative channel closing will
 probably require all microtransactions to be finished.
 
+
+##Final note:
+Routing from payee to meeting point, and from payer to meeting point, happens
+independently from each other. It is possible that both establish a route
+through the same link, or even the same channel. There are both cases where
+this happens in the same direction as in opposite direction. Even though, in
+efficient routing schemes, this is expected to be a rare occurrence, all
+messages have been designed to be robust against these cases. Typically, the
+pair of attributes (TransactionID, isPayerSide) acts as an identifier to a
+specific micro-transaction on a link. A node should never attempt to establish
+a route with identical (TransactionID, isPayerSide) multiple times over the
+same link, and there should never be a need to do so.
 
