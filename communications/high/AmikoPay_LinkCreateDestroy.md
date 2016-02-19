@@ -66,7 +66,7 @@ the link becomes disconnected. If one of the two ever re-connects with different
 data in the callBack\* attributes, then the other side will update its
 call-back data; this allows nodes to move to new network locations.
 
-A node can set the callback* values to None if there is no way for the other
+A node can set the callback* values to null if there is no way for the other
 node to re-connect. In that case, re-connection can only be done by one of the
 two nodes.
 

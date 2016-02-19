@@ -82,7 +82,7 @@ amikopay://host[:port]/ID
 
 ###Index value of initiation message
 As an exception to the section 'Message confirmation and re-transmission', the
-index value of session initiation messages is None, and its reception is not
+index value of session initiation messages is null, and its reception is not
 confirmed. This is because the act of closing and re-establishing a connection
 should be a NOP with respect to transmission of actual messages.
 
