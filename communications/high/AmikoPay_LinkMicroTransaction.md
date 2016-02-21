@@ -116,9 +116,9 @@ TBD: collision between Lock and route establishment messages.
 ##Commit settlement requesting
 
 If Bob (the receiving side of the payment) receives the transaction token, he
-can request a commit settlement by sending a Commit message to Alice:
+can request a commit settlement by sending a RequestCommit message to Alice:
 
-###Commit:
+###RequestCommit:
 Attributes:
 * 'token': string. The commit token.
 * 'isPayerSide': boolean. True if this is the route from the payer to the
@@ -129,13 +129,13 @@ that Bob can enforce a commit on the transaction channel, if necessary. Under
 these conditions, Alice is incentivized to voluntarily provide a commit
 settlement on the transaction channel, to free up the locked funds as soon as
 possible for future transactions. Also, having the token allows Alice to send
-a Commit message on her payer-side link.
+a RequestCommit message on her payer-side link.
 
 
 ###Settlement:
 
 If Alice (the sending side of the payment) receives the transaction token,
-either through a Commit message or in any other way, she can settle for
+either through a RequestCommit message or in any other way, she can settle for
 committing the transaction on the link, by sending a SettleCommit message:
 
 ###SettleCommit:
