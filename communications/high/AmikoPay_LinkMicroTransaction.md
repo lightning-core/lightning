@@ -104,13 +104,29 @@ Attributes:
 * 'transactionID': string. The transaction ID (the hash of the commit token).
 * 'isPayerSide': boolean. True if this is the route from the payer to the
   meeting point, False if this is the route from the payee to the meeting point.
+* 'amount': number. The amount (in Satoshi).
+* 'startTime': number. The start of the time range in which the transaction can
+  be committed by showing the transaction token.
+* 'endTime': number. The end of the time range in which the transaction can
+  be committed by showing the transaction token.
+* 'channelIndex': number. The index of the channel.
 * TBD: a payload attribute, with comments specific to the channel type.
 
 Next, a conversation consisting of zero or more 'ChannelMessage' messages
 finishes the locking. The number of messages and their content is specified by
 the channel class.
 
-TBD: collision between Lock and route establishment messages.
+In case the Lock message arrives *after* the receiving node has decided that
+the route reservation has timed out, the receiving node uses the values in
+'amount', 'startTime', 'endTime' and 'channelIndex' to re-reserve the funds;
+these values must be the same as in the MakeRoute message. Repeating these
+values is necessary, since the node receiving the Lock message may have
+forgotten them. Re-reserving is only done on the link that received the Lock
+message; after re-reserving, the Lock is applied on that link, and then the
+receiving node settles for rollback (see below).
+Rollback is then propagated toward the payer; further re-routing towards the
+payee is not performed, since the Lock is never propagated there, and a
+timed-out reservation already implies a rolled-back transaction.
 
 
 ##Commit settlement requesting
@@ -156,7 +172,7 @@ link: this frees up funds as soon as possible for future transactions, and it
 is a way of 'acting nice' to his payee-side neighbor.
 
 The opposite settlement is also possible: Bob (the receiving side of the
-payment) can voluntarily settle for roll-back with a CommitRollback message:
+payment) can voluntarily settle for roll-back with a SettleRollback message:
 
 ###SettleRollback:
 Attributes:
@@ -180,8 +196,6 @@ this link; the funds are freed up, and become available to the sending side
 (Alice). Alice can now voluntarily choose to settle for roll-back on her
 payee-side link: this frees up funds as soon as possible for future
 transactions, and it is a way of 'acting nice' to her payer-side neighbor.
-
-Note: Settling for rollback is not yet implemented.
 
 
 ##No Settlement:
