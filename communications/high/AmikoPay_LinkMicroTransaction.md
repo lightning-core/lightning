@@ -127,9 +127,11 @@ Attributes:
 * 'startTime': number. The start of the time range in which the transaction can
   be committed by showing the transaction token.
   This is an integer, indicating UNIX time.
+  This must be equal to the value in the HaveRoute message.
 * 'endTime': number. The end of the time range in which the transaction can
   be committed by showing the transaction token.
   This is an integer, indicating UNIX time.
+  This must be equal to the value in the HaveRoute message.
 * 'channelIndex': number. The index of the channel.
 * TBD: a payload attribute, with comments specific to the channel type.
 
