@@ -42,8 +42,7 @@ Attributes:
 Alice will (informally, without any microtransaction channel update or other
 cryptographic commitment) reserve the funds required for the transaction, to
 make sure the channel won't go out of funds before the routing is finished.
-On receiving the MakeRoute message, Bob will do the same. Time-out of this
-reservation is TBD.
+On receiving the MakeRoute message, Bob will do the same.
 
 Next, Bob will try to find a route towards the meeting point, using his other
 links. Of course, if Bob is the meeting point, this process succeeds in a
@@ -98,6 +97,12 @@ channel. The transacion finishes in a cancelled state on this link; Alice may
 try to establish a route by using her other links. Note that CancelRoute takes
 precedence over HaveRoute. Since it has the same effect as HaveNoRoute,
 precedence order with HaveNoRoute is irrelevant.
+
+Any node can decide that route making takes too long; in that case, the node
+sends a CancelRoute to the side where it previously sent MakeRoute, and, if
+applicable, a HaveNoRoute to the side where it previously received MakeRoute.
+The same is true for nodes that have received HaveRoute, but decide that it
+takes too long before Lock is received.
 
 The rest of this protocol description assumes that a HaveRoute has been sent,
 and no CancelRoute has been sent.
