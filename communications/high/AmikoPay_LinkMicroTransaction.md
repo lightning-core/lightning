@@ -26,10 +26,14 @@ routing through Bob. Alice starts by sending a MakeRoute message to Bob:
 Attributes:
 * 'amount': number. The amount (in Satoshi).
 * 'transactionID': string. The transaction ID (the hash of the commit token).
-* 'startTime': number. The start of the time range in which the transaction can
-  be committed by showing the transaction token.
-* 'endTime': number. The end of the time range in which the transaction can
-  be committed by showing the transaction token.
+* 'startTime': number or null. The start of the time range in which the
+  transaction can be committed by showing the transaction token.
+  In the case of payer-side routing this is null; in the case if payee-side
+  routing this is an integer, indicating UNIX time.
+* 'endTime': number or null. The end of the time range in which the
+  transaction can be committed by showing the transaction token.
+  In the case of payer-side routing this is null; in the case if payee-side
+  routing this is an integer, indicating UNIX time.
 * 'meetingPointID': string.
 * 'channelIndex': number. The index of the channel.
 * 'isPayerSide': boolean. True if this is the route from the payer to the
@@ -65,6 +69,16 @@ Attributes:
 * 'transactionID': string. The transaction ID (the hash of the commit token).
 * 'isPayerSide': boolean. True if this is the route from the payer to the
   meeting point, False if this is the route from the payee to the meeting point.
+* 'startTime': number. The start of the time range in which the
+  transaction can be committed by showing the transaction token.
+  This is an integer, indicating UNIX time.
+  In the case of payee-side routing this must be equal to the value in the
+  MakeRoute message.
+* 'endTime': number. The end of the time range in which the
+  transaction can be committed by showing the transaction token.
+  This is an integer, indicating UNIX time.
+  In the case of payee-side routing this must be equal to the value in the
+  MakeRoute message.
 
 Alice can send a CancelRoute message to Bob:
 
@@ -107,8 +121,10 @@ Attributes:
 * 'amount': number. The amount (in Satoshi).
 * 'startTime': number. The start of the time range in which the transaction can
   be committed by showing the transaction token.
+  This is an integer, indicating UNIX time.
 * 'endTime': number. The end of the time range in which the transaction can
   be committed by showing the transaction token.
+  This is an integer, indicating UNIX time.
 * 'channelIndex': number. The index of the channel.
 * TBD: a payload attribute, with comments specific to the channel type.
 
